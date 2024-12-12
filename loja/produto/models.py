@@ -10,3 +10,22 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
+    
+class Categoria(models.Model):
+    nome = models.CharField(max_length=200)
+    produto = models.ManyToManyField(Produto)
+
+    def __str__(self):
+        return self.nome
+    
+
+class Fornecedor(models.Model):
+    nome = models.CharField(max_length=200)
+    cnpj = models.CharField(max_length=14, unique=True, verbose_name='CNPJ')
+    produto = models.ManyToManyField(Produto)
+
+    class Meta:
+        verbose_name_plural = 'Fornecedores'
+
+    def __str__(self):
+        return self.nome
