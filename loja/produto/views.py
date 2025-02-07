@@ -20,6 +20,32 @@ class ProdcutsListView(ListView):
     model = Produto
     template_name = 'products_list.html'
     context_object_name =  'products'
+    paginate_by = 5
+
+    def get_queryset(self):
+        queryset = super(ProdcutsListView, self).get_queryset()
+        data = self.request.GET
+
+        search = data.get('search')
+        min_price = data.get('min_price')
+        max_price = data.get('max_price')
+
+        if search:
+            queryset = queryset.filter(
+                nome__icontains = search
+            )
+        
+        if min_price:
+            queryset = queryset.filter(
+                preco__gte = min_price
+            )
+        
+        if max_price:
+            queryset = queryset.filter(
+                preco__lte = max_price
+            )
+
+        return queryset
 
 class SuppliersListView(ListView):
     model = Fornecedor
